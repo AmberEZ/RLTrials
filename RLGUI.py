@@ -36,10 +36,6 @@ class RLTrialsGUI_tk(tkinter.Tk):
     def OnTSButtonClick(self):
         self.labelVariable.set( " Travelling Salesman" )
         TS.TS1Graph()
- 
-    def OnOtherButtonClick(self):
-        self.labelVariable.set( " (This should open the Other graphs)" )
-
 
 
 if __name__ == "__main__":
