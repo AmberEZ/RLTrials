@@ -21,6 +21,7 @@ def TS1Graph():
         gamma = 0.8        
         # how many points in graph? x points
         MATRIX_SIZE = 8
+        initial_state = 1
         
         plt.subplot(2, 1, 1)        
         plt.title('Map and path accuracy')
@@ -60,7 +61,8 @@ def TS1Graph():
         enviro_positive = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
         enviro_negative = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
          
-        initial_state = 1
+
+        
         assert(initial_state != goal)
         def available_actions(state):
             current_state_row = R[state,]
