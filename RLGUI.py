@@ -38,7 +38,7 @@ class RLTrialsGUI_tk(tkinter.Tk):
     #definition to run the travelling salesman program   
     def OnTSButtonClick(self):
         self.labelVariable.set( " Travelling Salesman" )
-        TS.TS1Graph()
+        TS.TS1Graph(7,1,8,0.8)
 
 
 if __name__ == "__main__":
