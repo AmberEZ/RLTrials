@@ -21,6 +21,7 @@ pos = nx.spring_layout(H)
 nx.draw_networkx_nodes(H,pos, node_size=[200,200,200,200,200,200,200,200])
 nx.draw_networkx_edges(H,pos)
 nx.draw_networkx_labels(H,pos)
+#plt.figure(figsize=(20,14))
 plt.show()
 
 # how many points in graph? x points
