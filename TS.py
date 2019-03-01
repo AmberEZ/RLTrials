@@ -11,6 +11,35 @@ import pylab as plt
 import networkx as nx
 
 
+def available_actions(state, R):
+            current_state_row = R[state,]
+            av_act = np.where(current_state_row >= 0)[1]
+            return av_act
+        
+def sample_next_action(available_actions_range):
+            next_action = int(np.random.choice(available_actions_range,1))
+            return next_action
+        
+def collect_environmental_data(action, positive, negative):
+            found = []
+            if action in positive:
+                found.append('p')        
+            if action in negative:
+                found.append('n')
+            return (found)
+        
+def available_actions_with_enviro_help(state, enviro_matrix_snap, R):
+            current_state_row = R[state,]
+            av_act = np.where(current_state_row >= 0)[1]
+            # if there are multiple routes, dis-favor anything negative
+            env_pos_row = enviro_matrix_snap[state,av_act]
+            if (np.sum(env_pos_row < 0)):
+                # can we remove the negative directions from av_act?
+                temp_av_act = av_act[np.array(env_pos_row)[0]>=0]
+                if len(temp_av_act) > 0:
+                    av_act = temp_av_act
+            return av_act
+
 def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         
         # map cell to cell, add circular cell to goal point: make context appropriate
@@ -56,29 +85,9 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         
         enviro_positive = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
         enviro_negative = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
-         
 
-        
         assert(initial_state != goal)
-        def available_actions(state):
-            current_state_row = R[state,]
-            av_act = np.where(current_state_row >= 0)[1]
-            return av_act
-         
-        def sample_next_action(available_actions_range):
-            next_action = int(np.random.choice(available_act,1))
-            return next_action
-        
-        def collect_environmental_data(action):
-            found = []
-            if action in positive:
-                found.append('p')
-        
-            if action in negative:
-                found.append('n')
-            return (found)
-         
-        available_act = available_actions(initial_state) 
+        available_act = available_actions(initial_state, R) 
          
         action = sample_next_action(available_act)
         
@@ -95,7 +104,7 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
           Q[current_state, action] = R[current_state, action] + gamma * max_value
           #print('max_value', R[current_state, action] + gamma * max_value)
           
-          environment = collect_environmental_data(action)
+          environment = collect_environmental_data(action, positive, negative)
           if 'p' in environment: 
             enviro_positive[current_state, action] += 1
           
@@ -112,7 +121,7 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         scores = []
         for i in range(700):
             current_state = np.random.randint(0, int(Q.shape[0]))
-            available_act = available_actions(current_state)
+            available_act = available_actions(current_state, R)
             action = sample_next_action(available_act)
             score = update(current_state,action,gamma)
         
@@ -123,7 +132,7 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         enviro_matrix = enviro_positive - enviro_negative
         
         # Get available actions in the current state
-        available_act = available_actions(initial_state) 
+        available_act = available_actions(initial_state, R) 
         
         # Sample next action to be performed
         action = sample_next_action(available_act)
@@ -142,35 +151,22 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         
             Q[current_state, action] = R[current_state, action] + gamma * max_value
         
-            environment = collect_environmental_data(action)
-            if 'b' in environment: 
+            environment = collect_environmental_data(action, positive, negative)
+            if 'p' in environment: 
                 enviro_matrix[current_state, action] += 1
-            if 's' in environment: 
-                enviro_matrix[current_state, action] -= 1
-        
+            if 'n' in environment: 
+                enviro_matrix[current_state, action] -= 1        
             return(np.sum(Q/np.max(Q)*100))
         
         update(initial_state,action,gamma)
         
         enviro_matrix_snap = enviro_matrix.copy()
-        
-        def available_actions_with_enviro_help(state):
-            current_state_row = R[state,]
-            av_act = np.where(current_state_row >= 0)[1]
-            # if there are multiple routes, dis-favor anything negative
-            env_pos_row = enviro_matrix_snap[state,av_act]
-            if (np.sum(env_pos_row < 0)):
-                # can we remove the negative directions from av_act?
-                temp_av_act = av_act[np.array(env_pos_row)[0]>=0]
-                if len(temp_av_act) > 0:
-                    av_act = temp_av_act
-            return av_act
-        
+
         # Training    
         scores = []
         for i in range(700):
             current_state = np.random.randint(0, int(Q.shape[0]))
-            available_act = available_actions_with_enviro_help(current_state)
+            available_act = available_actions_with_enviro_help(current_state, enviro_matrix_snap, R)
             action = sample_next_action(available_act)
             score = update(current_state,action,gamma)
             scores.append(score)
@@ -178,4 +174,5 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         plt.plot(scores)
         plt.show()
 
-TS1Graph(7,1,8,0.8)
+#TS1Graph(7,1,8,0.8)
+
