@@ -90,6 +90,7 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
          
         action = sample_next_action(available_act)
         
+        assert gamma > 0
         def update(current_state, action, gamma):
           max_index = np.where(Q[action,] == np.max(Q[action,]))[1]
           
