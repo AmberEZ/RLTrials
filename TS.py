@@ -14,25 +14,24 @@ import networkx as nx
 def TS1Graph():
         # map cell to cell, add circular cell to goal point: make context appropriate
         points_list = [(0,1), (1,5), (5,6), (5,4), (1,2), (2,3), (2,7)]
-        bees = [2]
-        smoke = [4,5,6]
+        positive = [2]
+        negative = [4,5,6]
         goal = 7
         # learning parameter
-        gamma = 0.8
+        gamma = 0.8        
+        # how many points in graph? x points
+        MATRIX_SIZE = 8
+        
         plt.subplot(2, 1, 1)        
         plt.title('Map and path accuracy')
         G=nx.Graph()
         G.add_edges_from(points_list)
-        mapping={0:'Start', 1:'1', 2:'2 - Bees', 3:'3', 4:'4 - Smoke', 5:'5 - Smoke', 6:'6 - Smoke', 7:'7 - Beehive'} 
+        mapping={0:'Start', 1:'1', 2:'2 - Positive', 3:'3', 4:'4 - Negative', 5:'5 - Negative', 6:'6 - Negative', 7:'7 - Goal'} 
         H=nx.relabel_nodes(G,mapping) 
         pos = nx.spring_layout(H)
         nx.draw_networkx_nodes(H,pos, node_size=[200,200,200,200,200,200,200,200])
         nx.draw_networkx_edges(H,pos)
         nx.draw_networkx_labels(H,pos)
-        #plt.figure(figsize=(20,14))
-        #plt.show()
-        # how many points in graph? x points
-        MATRIX_SIZE = 8
         
         # create matrix x*y
         R = np.matrix(np.ones(shape=(MATRIX_SIZE, MATRIX_SIZE)))
@@ -58,8 +57,8 @@ def TS1Graph():
         # re-initialize the matrices for new run
         Q = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
         
-        enviro_bees = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
-        enviro_smoke = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
+        enviro_positive = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
+        enviro_negative = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
          
         initial_state = 1
         
@@ -74,11 +73,11 @@ def TS1Graph():
         
         def collect_environmental_data(action):
             found = []
-            if action in bees:
-                found.append('b')
+            if action in positive:
+                found.append('p')
         
-            if action in smoke:
-                found.append('s')
+            if action in negative:
+                found.append('n')
             return (found)
          
         available_act = available_actions(initial_state) 
@@ -98,11 +97,11 @@ def TS1Graph():
           #print('max_value', R[current_state, action] + gamma * max_value)
           
           environment = collect_environmental_data(action)
-          if 'b' in environment: 
-            enviro_bees[current_state, action] += 1
+          if 'p' in environment: 
+            enviro_positive[current_state, action] += 1
           
-          if 's' in environment: 
-            enviro_smoke[current_state, action] += 1
+          if 'n' in environment: 
+            enviro_negative[current_state, action] += 1
           
           if (np.max(Q) > 0):
             return(np.sum(Q/np.max(Q)*100))
@@ -118,11 +117,11 @@ def TS1Graph():
             action = sample_next_action(available_act)
             score = update(current_state,action,gamma)
         
-        # print environmental matrices
+        # environmental matrices
         Q = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
         
         # subtract bees with smoke, this gives smoke a negative effect
-        enviro_matrix = enviro_bees - enviro_smoke
+        enviro_matrix = enviro_positive - enviro_negative
         
         # Get available actions in the current state
         available_act = available_actions(initial_state) 

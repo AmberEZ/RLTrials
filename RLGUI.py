@@ -26,9 +26,9 @@ class RLTrialsGUI_tk(tkinter.Tk):
         button = tkinter.Button(self,text=u"Travelling Salesman",
                                 command=self.OnTSButtonClick)
         button.grid(column=0,row=1)
-        button = tkinter.Button(self,text=u"Other Trial",
-                                command=self.OnOtherButtonClick)
-        button.grid(column=1,row=1)
+#        button = tkinter.Button(self,text=u"Other Trial",
+#                                command=self.OnOtherButtonClick)
+#        button.grid(column=1,row=1)
 
         self.labelVariable = tkinter.StringVar()
         label = tkinter.Label(self,textvariable=self.labelVariable,
