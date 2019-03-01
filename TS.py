@@ -10,13 +10,6 @@ import numpy as np
 import pylab as plt
 import networkx as nx
 
-goal = 7
-# learning parameter
-gamma = 0.8        
-# how many points in graph? x points
-MATRIX_SIZE = 8
-initial_state = 1
-
 
 def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         
@@ -44,7 +37,6 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         
         # assign zeros to paths and 100 to goal-reaching point
         for point in points_list:
-            print(point)
             if point[1] == goal:
                 R[point] = 100
             else:
