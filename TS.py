@@ -61,7 +61,7 @@ def TS1Graph():
         enviro_negative = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
          
         initial_state = 1
-        
+        assert(initial_state != goal)
         def available_actions(state):
             current_state_row = R[state,]
             av_act = np.where(current_state_row >= 0)[1]
