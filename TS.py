@@ -21,10 +21,10 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         assert isinstance(goal, int)
         plt.subplot(2, 1, 1)        
         plt.title('Map and path accuracy')
-        G=nx.Graph()
-        G.add_edges_from(points_list)
+        nodeGraph=nx.Graph()
+        nodeGraph.add_edges_from(points_list)
         mapping={0:'Start', 1:'1', 2:'2 - Positive', 3:'3', 4:'4 - Negative', 5:'5 - Negative', 6:'6 - Negative', 7:'7 - Goal'} 
-        H=nx.relabel_nodes(G,mapping) 
+        H=nx.relabel_nodes(nodeGraph,mapping) 
         pos = nx.spring_layout(H)
         nx.draw_networkx_nodes(H,pos, node_size=[200,200,200,200,200,200,200,200])
         nx.draw_networkx_edges(H,pos)
