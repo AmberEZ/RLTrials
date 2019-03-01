@@ -24,8 +24,8 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         points_list = [(0,1), (1,5), (5,6), (5,4), (1,2), (2,3), (2,7)]
         positive = [2]
         negative = [4,5,6]
-       
         
+        assert isinstance(goal, int)
         plt.subplot(2, 1, 1)        
         plt.title('Map and path accuracy')
         G=nx.Graph()
@@ -172,8 +172,7 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
                     av_act = temp_av_act
             return av_act
         
-        # Training
-        
+        # Training    
         scores = []
         for i in range(700):
             current_state = np.random.randint(0, int(Q.shape[0]))
