@@ -17,18 +17,10 @@ class RLTrialsGUI_tk(tkinter.Tk):
         titlelabel.grid(column=0,row=0,columnspan=2,sticky="EW")
         self.labelTitleVariable.set(u"Pick RL Trial")
 
-#        self.entryVariable = tkinter.StringVar()
-#        self.entry = tkinter.Entry(self,textvariable=self.entryVariable)
-#        self.entry.grid(column=0,row=0,sticky='EW')
-#        self.entry.bind("<Return>", self.OnPressEnter)
-#        self.entryVariable.set(u"Choosing a trial to run")
 
         button = tkinter.Button(self,text=u"Travelling Salesman",
                                 command=self.OnTSButtonClick)
         button.grid(column=0,row=1)
-#        button = tkinter.Button(self,text=u"Other Trial",
-#                                command=self.OnOtherButtonClick)
-#        button.grid(column=1,row=1)
 
         self.labelVariable = tkinter.StringVar()
         label = tkinter.Label(self,textvariable=self.labelVariable,
@@ -40,8 +32,6 @@ class RLTrialsGUI_tk(tkinter.Tk):
         self.resizable(True,False)
         self.update()
         self.geometry(self.geometry())       
-        #self.entry.focus_set()
-        #self.entry.selection_range(0, tkinter.END)
 
     def OnTSButtonClick(self):
         self.labelVariable.set( " Travelling Salesman" )
@@ -49,13 +39,7 @@ class RLTrialsGUI_tk(tkinter.Tk):
  
     def OnOtherButtonClick(self):
         self.labelVariable.set( " (This should open the Other graphs)" )
-        #self.entry.focus_set()
-        #self.entry.selection_range(0, tkinter.END)
 
-    #def OnPressEnter(self,event):
-        #self.labelVariable.set( self.entryVariable.get()+" (TODO: Program)" )
-        # self.entry.focus_set()
-        # self.entry.selection_range(0, tkinter.END)
 
 
 if __name__ == "__main__":
