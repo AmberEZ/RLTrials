@@ -12,6 +12,7 @@ import networkx as nx
 
 
 def TS1Graph():
+        
         # map cell to cell, add circular cell to goal point: make context appropriate
         points_list = [(0,1), (1,5), (5,6), (5,4), (1,2), (2,3), (2,7)]
         positive = [2]
@@ -122,7 +123,7 @@ def TS1Graph():
         # environmental matrices
         Q = np.matrix(np.zeros([MATRIX_SIZE,MATRIX_SIZE]))
         
-        # subtract bees with smoke, this gives smoke a negative effect
+        # subtract positive with negative, this gives the negative nodes a negative effect
         enviro_matrix = enviro_positive - enviro_negative
         
         # Get available actions in the current state
@@ -170,7 +171,7 @@ def TS1Graph():
             return av_act
         
         # Training
-        plt.subplot(2, 1, 2)
+        
         scores = []
         for i in range(700):
             current_state = np.random.randint(0, int(Q.shape[0]))
@@ -178,7 +179,7 @@ def TS1Graph():
             action = sample_next_action(available_act)
             score = update(current_state,action,gamma)
             scores.append(score)
-            
+        plt.subplot(2, 1, 2)   
         plt.plot(scores)
         plt.show()
     

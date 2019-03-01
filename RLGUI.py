@@ -12,16 +12,18 @@ class RLTrialsGUI_tk(tkinter.Tk):
     def initialize(self):
         self.grid()
         
+        #initiate the general info label
         self.labelTitleVariable = tkinter.StringVar()
         titlelabel = tkinter.Label(self, textvariable=self.labelTitleVariable, anchor="w", fg="black", bg="lightgrey")
         titlelabel.grid(column=0,row=0,columnspan=2,sticky="EW")
         self.labelTitleVariable.set(u"Pick RL Trial")
 
-
+        #initiate the Travelling Salesman Button
         button = tkinter.Button(self,text=u"Travelling Salesman",
                                 command=self.OnTSButtonClick)
         button.grid(column=0,row=1)
 
+        #Add a label to indicate the last selected RL Trial
         self.labelVariable = tkinter.StringVar()
         label = tkinter.Label(self,textvariable=self.labelVariable,
                               anchor="w",fg="white",bg="blue")
@@ -31,8 +33,9 @@ class RLTrialsGUI_tk(tkinter.Tk):
         self.grid_columnconfigure(0,weight=1)
         self.resizable(True,False)
         self.update()
-        self.geometry(self.geometry())       
-
+        self.geometry(self.geometry())   
+        
+    #definition to run the travelling salesman program   
     def OnTSButtonClick(self):
         self.labelVariable.set( " Travelling Salesman" )
         TS.TS1Graph()
