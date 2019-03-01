@@ -38,6 +38,7 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         nx.draw_networkx_labels(H,pos)
         
         # create matrix x*y
+        assert (isinstance(MATRIX_SIZE, int) & (MATRIX_SIZE > 1))
         R = np.matrix(np.ones(shape=(MATRIX_SIZE, MATRIX_SIZE)))
         R *= -1
         
