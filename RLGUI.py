@@ -38,6 +38,7 @@ class RLTrialsGUI_tk(tkinter.Tk):
     #definition to run the travelling salesman program   
     def OnTSButtonClick(self):
         self.labelVariable.set( " Travelling Salesman" )
+        #Variables defined are: goal, initial_state, MATRIX_SIZE and gamma
         TS.TS1Graph(7,1,8,0.8)
 
 

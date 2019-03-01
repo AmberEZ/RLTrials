@@ -185,4 +185,5 @@ def TS1Graph(goal, initial_state, MATRIX_SIZE, gamma):
         plt.subplot(2, 1, 2)   
         plt.plot(scores)
         plt.show()
-    
+
+TS1Graph(7,1,8,0.8)
